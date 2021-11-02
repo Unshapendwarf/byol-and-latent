@@ -48,6 +48,8 @@ class BYOLTrainer:
         train_loader = DataLoader(train_dataset, batch_size=self.batch_size,
                                   num_workers=self.num_workers, drop_last=False, shuffle=True)
 
+        print(type(train_loader))
+
         niter = 0
         model_checkpoints_folder = os.path.join(self.writer.log_dir, 'checkpoints')
 
@@ -55,8 +57,16 @@ class BYOLTrainer:
 
         for epoch_counter in range(self.max_epochs):
 
-            for (batch_view_1, batch_view_2), _ in train_loader:
+            for x in train_loader:
+                (batch_view_1, batch_view_2), _ = x
 
+                # ------------------check--------------------------------------
+                # print(len(x[0]), type(x[0]), x[0].size())
+                # print(len(x[1]), type(x[1]), x[1].size())
+                # print(len(batch_view_1), type(batch_view_1), batch_view_1.size())
+                # print(len(batch_view_2), type(batch_view_2), batch_view_2.size())
+                # -------------------------------------------------------------
+                # batch_view_1, batch_view_2 = x
                 batch_view_1 = batch_view_1.to(self.device)
                 batch_view_2 = batch_view_2.to(self.device)
 

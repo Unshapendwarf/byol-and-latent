@@ -36,7 +36,7 @@ trainer:
   batch_size: 64 # Original implementation uses 4096
   m: 0.996 # momentum update
   checkpoint_interval: 5000
-  max_epochs: 40 # Original implementation uses 1000
+  max_epochs: 80 # Original implementation uses 1000
   num_workers: 4 # number of worker for the data loader
 
 optimizer:
