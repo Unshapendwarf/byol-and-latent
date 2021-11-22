@@ -25,7 +25,7 @@ class psnrDataUnit:
     def getpsnr2(self):
         return self.psnr2
 
-    def getonetwo(self):
+    def getsrsum(self):
         return self.psnr1+self.psnr2
 
 
