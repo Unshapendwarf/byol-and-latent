@@ -58,3 +58,22 @@ During training, BYOL learns features using the STL10 ```train+unsupervised``` s
 |              KNN             |    PCA Features    |       -      |     256     |           -          |    -   |             |    31.8%    |
 | Logistic Regression  (Adam) |     BYOL (SGD)     |   [ResNet-18](https://drive.google.com/file/d/1Qj01H8cox8067cpCwhHZSQ0nfQl2RHbQ/view?usp=sharing)  |     512     |          128         |   40   | 64          |    70.1%    |
 | Logistic Regression  (Adam) |     BYOL (SGD)     |   [ResNet-18](https://drive.google.com/file/d/1CFQZWKfBzAZp56EADYfMgq0HHua3XCQW/view?usp=sharing)  |     512     |          128         |   80   | 64          |    75.2%    |
+
+
+---
+# Latent Vector MLP with BYOL encoder
+### Latent Vector extraction with BYOL encoder.
+![Image of latent vector](./assets/mlp_training.png)
+## Executing
+
+make tensor data and train
+```
+# Generate tensors
+# run save_feature_tensorV2.ipynb
+
+# training (example, check the run_load_and_train.sh in eval/)
+$ cd eval/
+$ python load_and_tran.py
+```
+
+
