@@ -173,7 +173,7 @@ if __name__ == "__main__":
 
     # model setting, hidden layer: 4
     byol_encoder_out_dim = 512
-    latent_out_dim = 64
+    latent_out_dim = 16
     h1, h2, h3, h4 = args.hid1, args.hid2, args.hid3, args.hid4
 
     mymo = MyOne(byol_encoder_out_dim, h1, h2, h3, h4, latent_out_dim)
