@@ -1,14 +1,9 @@
-# To add a new cell, type '# %%'
-# %%
-import argparse
-import torch
-from torch.utils.tensorboard import SummaryWriter
 import sys
 import time
-import yaml
-import torchvision
-from torchvision import transforms, datasets
+import os
 
+import torch
+from torch.utils.tensorboard import SummaryWriter
 import numpy as np
 
 from sklearn import preprocessing
@@ -18,18 +13,20 @@ from tqdm import tqdm
 
 from options import args
 
+
 sys.path.append('../')
-from mymodels.resnet_base_network import ResNet18
-from mydata.imageloader import MyDataset, psnrDataUnit
+# from mymodels.resnet_base_network import ResNet18
+# from mydata.imageloader import MyDataset, psnrDataUnit
+from mymodels.our_network import MyOne
 
 
 def create_data_loaders_from_arrays(X1_train, X2_train, y_train, X1_test, X2_test, y_test, arg_batch_size):
     print("batch size: %d \n" % arg_batch_size)
     train = torch.utils.data.TensorDataset(X1_train, X2_train, y_train)
-    train_loader = torch.utils.data.DataLoader(train, batch_size=arg_batch_size, shuffle=True)
+    train_loader = DataLoader(train, batch_size=arg_batch_size, shuffle=True)
 
     test = torch.utils.data.TensorDataset(X1_test, X2_test, y_test)
-    test_loader = torch.utils.data.DataLoader(test, batch_size=1, shuffle=False)
+    test_loader = DataLoader(test, batch_size=1, shuffle=False)
     return train_loader, test_loader
 
 def dataload(args):
@@ -101,11 +98,10 @@ class Trainer():
                     self.sumwriter.add_scalar("Loss/train", loss, epoch)
         if self.args.tenbrd_enable:
             self.sumwriter.close()
-    def savemodel(self):
+    def savemodel(self, save_dir):
         # model save
-        save_path = "/home/hong/dir1/PyTorch-BYOL/eval/second_encoder.pt"
-        torch.save(self.model, save_path)
-        # torch.save(self.model.state_dict(), save_path)
+        # torch.save(self.model, save_dir)
+        torch.save(self.model.state_dict(), save_dir + "trained_model.pt")
 
     def test(self):
         test_result_diff = []
@@ -138,26 +134,7 @@ class Trainer():
 
         with open("result_%.2f_%02d%02d_%02d%02d.txt" %(1.0, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min), 'w') as f:
             for item1, item2, item3 in test_result_diff:
-                f.write("%s, %s, %s\n" % (item1, item2, item3)) # sr_sum, model_out, abs(diff)    
-
-
-# Neural Network Class
-class MyOne(torch.nn.Module):
-    def __init__(self, D_in, H1, H2, H3, H4, D_out):
-        super().__init__()
-        self.linear1 = torch.nn.Linear(D_in, H1)
-        self.linear2 = torch.nn.Linear(H1, H2)
-        self.linear3 = torch.nn.Linear(H2, H3)
-        self.linear4 = torch.nn.Linear(H3, H4)
-        self.linear5 = torch.nn.Linear(H4, D_out)
-    
-    def forward(self, x):
-        x = torch.nn.functional.relu(self.linear1(x))
-        x = torch.nn.functional.relu(self.linear2(x))
-        x = torch.nn.functional.relu(self.linear3(x))
-        x = torch.nn.functional.relu(self.linear4(x))
-        x = self.linear5(x)
-        return x
+                f.write("%s, %s, %s\n" % (item1, item2, item3)) # sr_sum, model_out, abs(diff)
 
 
 if __name__ == "__main__":
@@ -169,7 +146,6 @@ if __name__ == "__main__":
     else:
         torch.cuda.empty_cache()
     print(f"Training with: {device}")
-    
 
     # model setting, hidden layer: 4
     byol_encoder_out_dim = 512
@@ -196,5 +172,5 @@ if __name__ == "__main__":
     train_ld, test_ld = dataload(args)
     t = Trainer(args, mymo, mycriterion, myoptimizer, writer, train_ld, test_ld, device)
     t.train()
-    t.savemodel()
+    t.savemodel(args.model_save_dir)
     # t.test()

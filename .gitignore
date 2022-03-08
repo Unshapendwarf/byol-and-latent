@@ -1,5 +1,2 @@
 .vscode/
-runs/
-eval/eval_results/
-eval/tensors/
-archive/
+

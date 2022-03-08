@@ -3,7 +3,7 @@
 
 ![Image of Yaktocat](./assets/arch.png)
 
-## Installation
+## Installation and run BYOL training
 
 Clone the repository and run
 ```
@@ -68,12 +68,20 @@ During training, BYOL learns features using the STL10 ```train+unsupervised``` s
 
 make tensor data and train
 ```
-# Generate tensors
-# run save_feature_tensorV2.ipynb
-
-# training (example, check the run_load_and_train.sh in eval/)
+# <Generate tensors and train MLP>
+# 1. (generate 1*512 vectors and save them in local => be able to avoid lack of GPU memory)
 $ cd eval/
+# run save_feature_tensorV2.ipynb in ./eval/
+# 2. training (example, check the run_load_and_train.sh in eval/)
 $ python load_and_tran.py
+
+# <feature vector extraction(check the parameters in files) >
+$ cd ./latent_eval
+# 1. (generate 1*512 vectors and save them in local => be able to avoid lack of GPU memory)
+$ cd eval/
+# run save_feature_tensorV2.ipynb in ./eval/
+# 2. extract features
+$ python generate_latent_out.py
 ```
 
 

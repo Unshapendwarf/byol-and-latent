@@ -5,7 +5,7 @@ parser = argparse.ArgumentParser(description='EDSR and MDSR')
 # Hardware specifications
 parser.add_argument('--cpu', action='store_true',
                     help='use cpu only')
-parser.add_argument('--tenbrd_enable', action='store_true', help='enable tensorboard')
+parser.add_argument('--tenbrd-enable', action='store_true', help='enable tensorboard')
 # parser.add_argument('--n_GPUs', type=int, default=1,
 #                     help='number of GPUs')
 
@@ -17,13 +17,15 @@ parser.add_argument('--tenbrd_enable', action='store_true', help='enable tensorb
 # Training specifications
 parser.add_argument('--epochs', type=int, default=400,
                     help='number of epochs to train')
-parser.add_argument('--batch_size', type=int, default=512,
+parser.add_argument('--batch-size', type=int, default=512,
                     help='input batch size for training')
 
-parser.add_argument('--train_path', type=str, default = "./tensors/run1111_0505/train.pt",
+parser.add_argument('--train-path', type=str, default = "./tensors/byol_encoder_out/train.pt",
                     help='train_tensor_path')
-parser.add_argument('--test_path', type=str, default = "./tensors/run1111_0505/test.pt",
+parser.add_argument('--test-path', type=str, default = "./tensors/byol_encoder_out/test.pt",
                     help='test_tensor_path')
+parser.add_argument('--model-save-dir', type=str, default = "./runs/")
+parser.add_argument('--out-save-dir', type=str, default = "./tensors/latent_out/")
 
 parser.add_argument('--hid1', type=int, default=512, help='hidden layer 1 size')
 parser.add_argument('--hid2', type=int, default=512, help='hidden layer 2 size')

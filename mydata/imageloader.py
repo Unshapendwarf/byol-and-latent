@@ -42,9 +42,9 @@ class MyDataset(Dataset):
         
     def __getitem__(self, index):
         image1_path, image2_path, psnr_sum = self.images_psnrs[index]
-        image1 = cv2.imread(image1_path)
+        image1 = cv2.imread(image1_path + ".png")
         image1 = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)
-        image2 = cv2.imread(image2_path)
+        image2 = cv2.imread(image2_path + ".png")
         image2 = cv2.cvtColor(image2, cv2.COLOR_BGR2RGB)
 
         if self.transform is not None:
